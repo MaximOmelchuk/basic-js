@@ -32,6 +32,7 @@ class DepthCalculator {
         if (tmp>this.max) this.max=tmp;
       }
     });
+
     return this.max;
   }
 }
