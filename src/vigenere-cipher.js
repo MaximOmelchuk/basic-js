@@ -31,36 +31,46 @@ class VigenereCipheringMachine {
       key+=key
     };
 
-    key = key.toUpperCase();
-    str = str.toUpperCase();
+    key = key.toUpperCase().split('');
+    str = str.toUpperCase().split('');
 
-    str = str.split('').map((x,i)=>{
-      if (x.charCodeAt()<65 || x.charCodeAt()>90 || key[i].charCodeAt()<65 || key[i].charCodeAt()>90 ) return;
+    str = str.map((x,i)=>{
+      if (x.charCodeAt()<65 || x.charCodeAt()>90) {
+        key.splice(i,0,'del');
+        return x;
+      };
 
-      let code = x.charCodeAt() + key[i].charCodeAt - 65;
+      let code = x.charCodeAt() + key[i].charCodeAt() - 65;
       if (code <= 90) {
         return String.fromCharCode(code)
-      } else return String.fromCharCode(code-36) 
+      } else return String.fromCharCode(code-26) 
     })
 
+    return this.type ? str.join('') : str.reverse().join('')
 
   }
-  // decrypt(str, key) {
-  //   while (key.length < str.length) {
-  //     key+=key
-  //   };
+  decrypt(str, key) {
+    if (!str || !key) throw new Error('Incorrect arguments!');
+    while (key.length < str.length) {
+      key+=key
+    };
 
-  //   key = key.toUpperCase();
-  //   str = str.toUpperCase();
+    key = key.toUpperCase().split('');
+    str = str.toUpperCase().split('');
 
-  //   str = str.split('').map((x,i)=>{
-  //     if (x.charCodeAt()<65 || x.charCodeAt()>90 || key[i].charCodeAt()<65 || key[i].charCodeAt()>90 ) return;
+    str = str.map((x,i)=>{
+      if (x.charCodeAt()<65 || x.charCodeAt()>90) {
+        key.splice(i,0,'del');
+        return x;
+      };
 
-  //     let code = x.charCodeAt() + key[i].charCodeAt - 65;
-  //     if (code <= 90) {
-  //       return String.fromCharCode(code)
-  //     } else return String.fromCharCode(code-36) 
-  //   })
+      let code = x.charCodeAt() - key[i].charCodeAt() + 65;
+      if (code >= 65) {
+        return String.fromCharCode(code)
+      } else return String.fromCharCode(code+26) 
+    });
+    return this.type ? str.join('') : str.reverse().join('');
+ }
 }
 
 module.exports = {
